@@ -1,0 +1,75 @@
+include hardware/qcom-caf/common/qcom_boards.mk
+include hardware/qcom-caf/common/qcom_defs.mk
+
+UM_3_18_HAL_FAMILY := msm8996
+UM_4_4_HAL_FAMILY := msm8998
+
+ifeq (,$(TARGET_ENFORCES_QSSI))
+UM_3_18_HAL_FAMILY += msm8937 msm8953
+UM_4_4_HAL_FAMILY += sdm660
+else
+UM_4_9_LEGACY_FAMILY := msm8937 msm8953
+UM_4_19_LEGACY_FAMILY := sdm660
+endif
+
+UM_PLATFORMS := \
+    $(UM_3_18_FAMILY) \
+    $(UM_4_4_FAMILY) \
+    $(UM_4_9_FAMILY) \
+    $(UM_4_14_FAMILY) \
+    $(UM_4_19_FAMILY) \
+    $(UM_5_4_FAMILY) \
+    $(UM_5_10_FAMILY) \
+    $(UM_5_15_FAMILY)
+
+LEGACY_UM_PLATFORMS := \
+    $(UM_3_18_FAMILY) \
+    $(UM_4_4_FAMILY) \
+    $(UM_4_9_FAMILY) \
+    $(UM_4_14_FAMILY) \
+    $(UM_4_19_FAMILY) \
+    $(UM_5_4_FAMILY)
+
+QSSI_SUPPORTED_PLATFORMS := \
+    $(UM_4_9_LEGACY_FAMILY) \
+    $(UM_4_19_LEGACY_FAMILY) \
+    $(UM_4_9_FAMILY) \
+    $(UM_4_14_FAMILY) \
+    $(UM_4_19_FAMILY) \
+    $(UM_5_4_FAMILY) \
+    $(UM_5_10_FAMILY) \
+    $(UM_5_15_FAMILY)
+
+ifneq ($(filter $(UM_3_18_HAL_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 3.18
+    QCOM_HARDWARE_VARIANT := msm8996
+else ifneq ($(filter $(UM_4_9_LEGACY_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 4.9
+    QCOM_HARDWARE_VARIANT := msm8953
+else ifneq ($(filter $(UM_4_4_HAL_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 4.4
+    QCOM_HARDWARE_VARIANT := msm8998
+else ifneq ($(filter $(UM_4_19_LEGACY_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 4.19
+    QCOM_HARDWARE_VARIANT := sdm660
+else ifneq ($(filter $(UM_4_9_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 4.9
+    QCOM_HARDWARE_VARIANT := sdm845
+else ifneq ($(filter $(UM_4_14_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 4.14
+    QCOM_HARDWARE_VARIANT := sm8150
+else ifneq ($(filter $(UM_4_19_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 4.19
+    QCOM_HARDWARE_VARIANT := sm8250
+else ifneq ($(filter $(UM_5_4_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 5.4
+    QCOM_HARDWARE_VARIANT := sm8350
+else ifneq ($(filter $(UM_5_10_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 5.10
+    QCOM_HARDWARE_VARIANT := sm8450
+else ifneq ($(filter $(UM_5_15_FAMILY),$(TARGET_BOARD_PLATFORM)),)
+    TARGET_KERNEL_VERSION ?= 5.15
+    QCOM_HARDWARE_VARIANT := sm8550
+else
+    QCOM_HARDWARE_VARIANT := $(TARGET_BOARD_PLATFORM)
+endif
